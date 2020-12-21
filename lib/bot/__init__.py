@@ -1,4 +1,5 @@
 from discord import Intents
+from discord import Embed
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from discord.ext.commands import Bot as BotBase
 
@@ -40,6 +41,16 @@ class Bot(BotBase):
             self.guild = self.get_guild(720314831818719253)
             print("Bot hazır!")
 
+            channel = self.get_channel(720319247628369950)
+            await channel.send("Bot hazır!")
+
+            embed = Embed(title="Bot Aktif", description="TXF Botu artık aktif hâlde!")
+            fields = [("Name", "Value", True),
+                        ("Başka bir alan", "Bu alan başka bir alanın bitişiğinde.", True),
+                        ("Çizgide olmayan alan", "Bu alan kendi sırasında gözükecek.", False)]
+            for name, value, inline in fields:
+                embed.add_field(name=name, value=value, inline=inline)
+            await channel.send(embed=embed)
         else:
             print("Bot yeniden bağlandı!")
 

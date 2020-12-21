@@ -44,10 +44,10 @@ class Bot(BotBase):
             channel = self.get_channel(720319247628369950)
             await channel.send("Bot hazır!")
 
-            embed = Embed(title="Bot Aktif", description="TXF Botu artık aktif hâlde!")
-            fields = [("Name", "Value", True),
-                        ("Başka bir alan", "Bu alan başka bir alanın bitişiğinde.", True),
-                        ("Çizgide olmayan alan", "Bu alan kendi sırasında gözükecek.", False)]
+            embed = Embed(title="Bot Aktif", description="The X Files botu artık aktif!")
+            fields = [("Yapımcı", "Kerem Arslan#0001", True),
+                        ("Ana sunucu Link", "https://discord.gg/Mtjvspv", True),
+                        ("Bot Hakkında", "Bu botun yapılma amacı The X Files dizisi hakkındaki Türkiye discord sunucusunu geliştirmektir.", False)]
             for name, value, inline in fields:
                 embed.add_field(name=name, value=value, inline=inline)
             await channel.send(embed=embed)

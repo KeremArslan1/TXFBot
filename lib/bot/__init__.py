@@ -65,7 +65,7 @@ class Bot(BotBase):
             '''
 
             '''
-            if you want to put photo from database, you need follow these steps:
+            if you want to put photo from database or local, you need follow these steps:
             change "From discord import Embed" to "From discord import Embed, File"
             add a folder named "images" in data folder
             put whatever photo you want

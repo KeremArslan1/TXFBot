@@ -4,7 +4,9 @@ from discord import Embed
 from datetime import datetime
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from discord.enums import RelationshipType
 from discord.ext.commands import Bot as BotBase
+from discord.ext.commands import CommandNotFound
 
 PREFIX = "T-"
 OWNER_IDS = [385800441709068288]
@@ -37,6 +39,24 @@ class Bot(BotBase):
 
     async def on_disconnect(self):
         print("Bot'un bağlantısı koptu!")
+
+    async def on_error(self, err, *args, **kwargs):
+        if err == "on_command_error":
+            await args[0].send("Bir şeyler ters gitti!")
+            
+        channel = self.get_channel(720319247628369950)
+        await channel.send("Bir sorun oluştu!")
+        raise
+
+    async def on_command_error(self, ctx, exc):
+        if isinstance(exc, CommandNotFound):
+            pass
+
+        elif hasattr(exc, "original"):
+            raise exc.original
+
+        else:
+            raise exc
 
     async def on_ready(self):
         if not self.ready:

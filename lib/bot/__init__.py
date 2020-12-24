@@ -41,7 +41,7 @@ class Bot(BotBase):
 
     async def rules_reminder(self):
         channel = self.get_channel(720319247628369950)
-        await channel.send("Sunucuyu aktif tutmayı unutmayın @here")
+        await self.stdout.send("Sunucuyu aktif tutmayı unutmayın @here")
 
     async def on_connect(self):
         print("Bot bağlandı!")
@@ -54,7 +54,7 @@ class Bot(BotBase):
             await args[0].send("Bir şeyler ters gitti!")
 
         channel = self.get_channel(720319247628369950)
-        await channel.send("Bir sorun oluştu!")
+        await self.stdout.send("Bir sorun oluştu!")
         raise
 
     async def on_command_error(self, ctx, exc):
@@ -71,11 +71,11 @@ class Bot(BotBase):
         if not self.ready:
             self.ready = True
             self.guild = self.get_guild(720314831818719253)
+            self.stdout = self.get_channel(720319247628369950)
             self.scheduler.add_job(self.rules_reminder, CronTrigger(day_of_week=0, hour=12, minute=0, second=0))
             self.scheduler.start()
 
-            channel = self.get_channel(720319247628369950)
-            await channel.send("Bot status:")
+            await self.stdout.send("Bot status:")
 
             embed = Embed(title="Bot Aktif", description="The X Files botu artık aktif!",
                           colour=0x00FF00, timestamp=datetime.utcnow())
@@ -88,7 +88,7 @@ class Bot(BotBase):
             embed.set_footer(text="Yakında komut eklemeyi başarabileceğim -umarım-")
             embed.set_thumbnail(url=self.guild.icon_url)
             
-            await channel.send(embed=embed)
+            await self.stdout.send(embed=embed)
 
             '''
             if you want to add extra image in embed: embed.set_image(url="image url or location")

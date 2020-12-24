@@ -1,4 +1,6 @@
+from asyncio import sleep
 from apscheduler.triggers.cron import CronTrigger
+from glob import glob
 import discord
 from discord import Intents
 from discord import Embed
@@ -14,12 +16,27 @@ from ..db import db
 
 PREFIX = "T-"
 OWNER_IDS = [385800441709068288]
+COGS = [path.split("\\")[-1][:-3] for path in glob("./lib/cogs/*.py")]
 
+class Ready(object):
+    def __init__(self):
+        for cog in COGS:
+            setattr(self, cog, False)
+
+
+    def ready_up(self, cog):
+        setattr(self, cog, True)
+        print(f"{cog} cog hazır")
+
+    def all_ready(self):
+        return all([getattr(self, cog) for cog in COGS])
 
 class Bot(BotBase):
     def __init__(self):
         self.PREFIX = PREFIX
         self.ready = False
+        self.cogs_ready = Ready()
+
         self.guild = None
         self.scheduler = AsyncIOScheduler()
 
@@ -30,8 +47,18 @@ class Bot(BotBase):
             Intents=Intents.all(),
             )
 
+    def setup(self):
+        for cog in COGS:
+            self.load_extension(f"lib.cogs.{cog}")
+            print(f"{cog} cog yüklendı!")
+
+        print("setup complete")
+
     def run(self, version):
         self.VERSION = version
+
+        print("setup çalıştırılıyor...")
+        self.setup()
 
         with open("./lib/bot/token.0", "r", encoding="utf-8") as tf:
             self.TOKEN = tf.read()
@@ -69,7 +96,6 @@ class Bot(BotBase):
 
     async def on_ready(self):
         if not self.ready:
-            self.ready = True
             self.guild = self.get_guild(720314831818719253)
             self.stdout = self.get_channel(720319247628369950)
             self.scheduler.add_job(self.rules_reminder, CronTrigger(day_of_week=0, hour=12, minute=0, second=0))
@@ -102,8 +128,14 @@ class Bot(BotBase):
             the path is = "./data/images/image_name.extansion"
             I am going to use imgur because you are able to see the picture :) (and lot easier than local files)
             '''
+
+            while not self.cogs_ready.all_ready():
+                await sleep(0.5)
+
+
+            self.ready = True
             print("Bot hazır!")
-            await bot.change_presence(activity=discord.Game(name="The X Files Türkiye"))
+            await Bot.change_presence(self, activity=discord.Game(name="The X Files Türkiye"))
             
             
             

@@ -31,6 +31,10 @@ class Fun(Cog):
             await ctx.message.delete()
             await ctx.send(mesaj)
 
+    @command(name="Kaynak_kodları",)
+    async def kaynak_kodları(self, ctx,):
+        embed=Embed(title="Kaynak Kodlarım", url="https://github.com/KeremArslan1/TXFBot", description="Bu link sayesinde kaynak kodlarıma ulaşabilirsin!", color=0x0088ff)
+        await ctx.send(embed=embed)
     @Cog.listener()
     async def on_ready(self):
         if not self.bot.ready:

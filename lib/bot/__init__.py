@@ -121,7 +121,7 @@ class Bot(BotBase):
             for name, value, inline in fields:
                 embed.add_field(name=name, value=value, inline=inline)
             embed.set_author(name="The X Files Türkiye", icon_url="https://i.imgur.com/KLjU8fb.jpg")
-            embed.set_footer(text="Yakında komut eklemeyi başarabileceğim -umarım-")
+            embed.set_footer(text="Artık düzgün bir şekilde komut ve embed ekleyebiliyorum!!")
             embed.set_thumbnail(url=self.guild.icon_url)
             
             await self.stdout.send(embed=embed)

@@ -3,13 +3,14 @@ from apscheduler.triggers.cron import CronTrigger
 from glob import glob
 import discord
 from discord import Intents
-from discord import Embed
+from discord import Embed, File
 
 from datetime import datetime
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from discord.enums import RelationshipType
 from discord.ext.commands import Bot as BotBase
+from discord.ext.commands import Context
 from discord.ext.commands import CommandNotFound
 
 from ..db import db
@@ -66,6 +67,16 @@ class Bot(BotBase):
         print("Bot çalıştırılıyor...")
         super().run(self.TOKEN, reconnect =True)
 
+    async def process_commands(self, message):
+        ctx = await self.get_context(message, cls=Context)
+
+        if ctx.command is not None and ctx.guild is not None:
+            if self.ready:
+                await self.invoke(ctx)
+
+            else:
+                await ctx.send("Şu an komut çalıştırmaya hazır değilim, birkaç saniye sonra tekrar deneyiniz.")
+
     async def rules_reminder(self):
         channel = self.get_channel(720319247628369950)
         await self.stdout.send("Sunucuyu aktif tutmayı unutmayın @here")
@@ -82,7 +93,6 @@ class Bot(BotBase):
 
         channel = self.get_channel(720319247628369950)
         await self.stdout.send("Bir sorun oluştu!")
-        raise
 
     async def on_command_error(self, ctx, exc):
         if isinstance(exc, CommandNotFound):
@@ -135,7 +145,7 @@ class Bot(BotBase):
 
             self.ready = True
             print("Bot hazır!")
-            await Bot.change_presence(self, activity=discord.Game(name="The X Files Türkiye"))
+            await Bot.change_presence(self, activity=discord.Game(name="T-help"))
             
             
             
@@ -154,6 +164,7 @@ class Bot(BotBase):
             print("Bot yeniden bağlandı!")
 
     async def on_message(self, message):
-        pass
+        if not message.author.bot:
+            await self.process_commands(message)
 
 bot = Bot()

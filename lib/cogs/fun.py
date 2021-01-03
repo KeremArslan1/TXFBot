@@ -1,6 +1,7 @@
 from random import choice, randint
 from typing import Optional
 from aiohttp import request
+from discord.errors import HTTPException
 from discord import Member, Embed
 from discord.ext.commands import Cog, BucketType
 from discord.ext.commands import BadArgument
@@ -15,26 +16,41 @@ class Fun(Cog):
     async def selam(self, ctx):
         await ctx.send(f"{choice(('Selam', 'Merhaba'))} {ctx.author.mention}!")
 
+
     @command(name="zar_at", aliases=["Zar_at", "zar_At", "Zar_At"])
     async def zar_at(self, ctx, Zar_kombinasyonu: str):
         dice, value = (int(term) for term in Zar_kombinasyonu.split("x"))
-        rolls = [randint(1, value) for i in range(dice)]
 
-        await ctx.send(" + ".join([str(r) for r in rolls]) + f"= {sum(rolls)}")
+        if dice <= 25:
+            rolls = [randint(1, value) for i in range(dice)]
+
+            await ctx.send(" + ".join([str(r) for r in rolls]) + f"= {sum(rolls)}")
+
+        else:
+            await ctx.send("tek seferde çok fazla zar kullanıldı! Ben bu kadar zeki değilim :point_right: :point_left: :pleading_face: ")
 
     @command(name="tokat", aliases=["Vur", "Tokat", "vur"])
     async def slap_member(self, ctx, kullanıcı: Member, *, sebep: Optional[str] = "sebepsizce"):
         await ctx.send(f"{ctx.author.mention}, {kullanıcı.mention}'a {sebep} sebebiyle vurdu!")
+
+    @slap_member
+    async def slap_member_error(self, ctx, exc):
+        if isinstance(exc, BadArgument):
+            await ctx.send("Bu isimde bir kullanıcı bulamadım!")
+
 
     @command(name="echo", aliases=["eko", "Eko", "Echo", "söyle", "Söyle"])
     async def echo_message(self, ctx, *, mesaj):
             await ctx.message.delete()
             await ctx.send(mesaj)
 
+
     @command(name="Kaynak_kodları",)
     async def kaynak_kodları(self, ctx,):
         embed=Embed(title="Kaynak Kodlarım", url="https://github.com/KeremArslan1/TXFBot", description="Bu link sayesinde kaynak kodlarıma ulaşabilirsin!", color=0x0088ff)
         await ctx.send(embed=embed)
+
+
     @Cog.listener()
     async def on_ready(self):
         if not self.bot.ready:

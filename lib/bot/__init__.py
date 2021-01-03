@@ -9,15 +9,19 @@ from datetime import datetime
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from discord.enums import RelationshipType
+from discord.errors import HTTPException, Forbidden
 from discord.ext.commands import Bot as BotBase
 from discord.ext.commands import Context
-from discord.ext.commands import CommandNotFound
+from discord.ext.commands import (CommandNotFound, BadArgument, MissingRequiredArgument)
+from discord.ext.commands.errors import BadArgument
 
 from ..db import db
 
 PREFIX = "T-"
 OWNER_IDS = [385800441709068288]
 COGS = [path.split("\\")[-1][:-3] for path in glob("./lib/cogs/*.py")]
+IGNORE_EXCEPTIONS = (CommandNotFound, BadArgument)
+
 
 class Ready(object):
     def __init__(self):
@@ -91,18 +95,24 @@ class Bot(BotBase):
         if err == "on_command_error":
             await args[0].send("Bir şeyler ters gitti!")
 
-        channel = self.get_channel(720319247628369950)
         await self.stdout.send("Bir sorun oluştu!")
+        raise
 
     async def on_command_error(self, ctx, exc):
-        if isinstance(exc, CommandNotFound):
+        if any([isinstance(exc, error) for error in IGNORE_EXCEPTIONS]):
             pass
 
-        elif hasattr(exc, "original"):
-            raise exc.original
+        elif isinstance(exc, MissingRequiredArgument):
+            await ctx.send("Bir veya birden fazla argüman eksik.")
+        
+        elif isinstance(exc.original, HTTPException):
+            await ctx.send("Şu anda mesaj gönderemiyorum!")
+
+        elif isinstance(exc.original, Forbidden):
+            await ctx.send("Bunu yapmam için gereken yetkiye sahip değilim!")
 
         else:
-            raise exc
+            raise exc.original
 
     async def on_ready(self):
         if not self.ready:

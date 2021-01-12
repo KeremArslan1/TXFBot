@@ -49,7 +49,36 @@ class Fun(Cog):
     async def kaynak_kodları(self, ctx,):
         embed=Embed(title="Kaynak Kodlarım", url="https://github.com/KeremArslan1/TXFBot", description="Bu link sayesinde kaynak kodlarıma ulaşabilirsin!", color=0x0088ff)
         await ctx.send(embed=embed)
+    
+    @command(name="Gerçekler", aliases=["gerçekler", "Facts", "facts"])
+    async def animal_fact(self, ctx, animal: str):
+        if animal.lower() in ("dog", "cat", "panda", "fox", "bird", "koala"):
+            fact_url = f"https://some-random-api.ml/facts/{animal.lower()}"
+            image_url = f"https://some-random-api.ml/img/{'birb' if animal.lower() == 'bird' else animal.lower()}"
+            
+            async with request("GET", image_url, headers={}) as response:
+                if response.status == 200:
+                    data = await response.json()
+                    image_link = data["link"]
 
+                else:
+                    image_link = None
+
+            async with request("GET", fact_url, headers={}) as response:
+                if response.status == 200:
+                    data = await response.json()
+
+                    embed = Embed(title=f"{animal.title()} hakkında şaşırtıcı gerçekler", description=data["fact"], color=ctx.author.colour)
+                    
+                    if image_link is not None:
+                        embed.set_image(url=image_link)
+                    await ctx.send(embed=embed)
+
+                else:    
+                    await ctx.send(f"API {response.status} geri dönüşü yaptı.")
+        
+        else:
+            await ctx.send("Bu hayvan için hiçbir şaşırtıcı gerçek bulunamadı!")
 
     @Cog.listener()
     async def on_ready(self):

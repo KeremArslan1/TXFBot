@@ -8,7 +8,7 @@ from discord.ext.commands import command
 
 
 def syntax(command):
-	cmd_and_aliases = "|".join([str(command), *command.aliases])
+	komut_and_aliases = "|".join([str(command), *command.aliases])
 	params = []
 
 	for key, value in command.params.items():
@@ -17,7 +17,7 @@ def syntax(command):
 
 	params = " ".join(params)
 
-	return f"`{cmd_and_aliases} {params}`"
+	return f"`{komut_and_aliases} {params}`"
 
 
 class HelpMenu(ListPageSource):
@@ -30,9 +30,9 @@ class HelpMenu(ListPageSource):
 		offset = (menu.current_page*self.per_page) + 1
 		len_data = len(self.entries)
 
-		embed = Embed(title="Yardım",
-					  description="The X Files Bot yardım merkezine hoş geldin!",
-					  colour=0x2f3136)
+		embed = Embed(title=":blue_book:Yardım kitapçığı",
+					  description="The X Files Bot'un yardım kitapçığına hoş geldin!",
+					  colour=0x87ceeb)
 		embed.set_thumbnail(url=self.ctx.guild.me.avatar_url)
 		embed.set_footer(text=f"{offset:,}'den {min(len_data, offset+self.per_page-1):,}'e kadar olan komutlar. Toplam {len_data:,} komut bulunmakta.")
 
@@ -55,15 +55,16 @@ class Help(Cog):
 		self.bot = bot
 		self.bot.remove_command("help")
 
-	async def cmd_help(self, ctx, command):
-		embed = Embed(title=f"`{command}` komutu ile yardım et.",
+	async def komut_help(self, ctx, command):
+		embed = Embed(title=f"`{command}` komutu",
 					  description=syntax(command),
-					  colour=0x2f3136)
+					  colour=ctx.author.colour)
 		embed.add_field(name="Komut açıklaması", value=command.help)
 		await ctx.send(embed=embed)
 
-	@command(name="help", alieses=["Yardım", "yardım", "Help"])
+	@command(name="help", aliases=["Help", "Yardım", "yardım", "yardim", "Yardim"])
 	async def show_help(self, ctx, komut: Optional[str]):
+		"""Bu mesajı gösterir."""
 		if komut is None:
 			menu = MenuPages(source=HelpMenu(ctx, list(self.bot.commands)),
 							 delete_message_after=True,
@@ -72,10 +73,10 @@ class Help(Cog):
 
 		else:
 			if (command := get(self.bot.commands, name=komut)):
-				await self.cmd_help(ctx, command)
+				await self.komut_help(ctx, command)
 
 			else:
-				await ctx.send("Bu komut bulunamıyor.")
+				await ctx.send("Böyle bir komut bulunmamaktadır, lütfen başka bir komut ile tekrar deneyiniz.")
 
 	@Cog.listener()
 	async def on_ready(self):

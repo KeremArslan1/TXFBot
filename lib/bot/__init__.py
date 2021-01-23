@@ -12,8 +12,8 @@ from discord.enums import RelationshipType
 from discord.errors import HTTPException, Forbidden
 from discord.ext.commands import Bot as BotBase
 from discord.ext.commands import Context
-from discord.ext.commands import (CommandNotFound, BadArgument, MissingRequiredArgument)
-from discord.ext.commands.errors import BadArgument
+from discord.ext.commands import (CommandNotFound, BadArgument, MissingRequiredArgument, CommandOnCooldown)
+from discord.ext.commands.errors import BadArgument, CommandOnCooldown
 
 from ..db import db
 
@@ -102,17 +102,24 @@ class Bot(BotBase):
         if any([isinstance(exc, error) for error in IGNORE_EXCEPTIONS]):
             pass
 
+        elif isinstance(exc, CommandOnCooldown):
+            await ctx.send(f"Bu komutu durmadan kullanamazsın, {exc.retry_after:,.2f} saniye sonra tekrardan dene!")
+            #await ctx.send(f"That command is on {str(exc.cooldown.type).split(".")[-1]} cooldown, try again in{exc.retry_after:,.2f} secs!")
+
         elif isinstance(exc, MissingRequiredArgument):
             await ctx.send("Bir veya birden fazla argüman eksik.")
         
-        elif isinstance(exc.original, HTTPException):
-            await ctx.send("Şu anda mesaj gönderemiyorum!")
+        elif hasattr(exc, "original"):
+        #elif isinstance(exc.original, HTTPException):
+            #await ctx.send("Şu anda mesaj gönderemiyorum!")
+            if isinstance(exc.original, Forbidden):
+                await ctx.send("Bunu yapmam için gereken yetkiye sahip değilim!")
 
-        elif isinstance(exc.original, Forbidden):
-            await ctx.send("Bunu yapmam için gereken yetkiye sahip değilim!")
+            else:
+                raise exc.original
 
         else:
-            raise exc.original
+            raise exc
 
     async def on_ready(self):
         if not self.ready:

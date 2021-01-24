@@ -17,20 +17,20 @@ class Welcome(Cog):
 	@Cog.listener()
 	async def on_member_join(self, member):
 		db.execute("INSERT INTO exp (UserID) VALUES (?)", member.id)
-		await self.bot.get_channel(802935203492397066).send(f"Welcome to **{member.guild.name}** {member.mention}! Head over to <#626608699942764548> to say hi!")
-		
+		await self.bot.get_channel(748180227095789620).send(f"Merhaba {member.mention}, **{member.guild.name}** sunucusuna hoş geldin!")
+
 		try:
-			await member.send(f"Welcome to **{member.guild.name}**! Enjoy your stay!")
+			await member.send(f"Merhaba, **{member.guild.name}** sunucusuna hoş geldin!")
 
 		except Forbidden:
 			pass
 
-		await member.add_roles(member.guild.get_role(748171036784197752))
+		#await member.add_roles(member.guild.get_role(748171036784197752))
 
 	@Cog.listener()
 	async def on_member_remove(self, member):
 		db.execute("DELETE FROM exp WHERE UserID = ?", member.id)
-		await self.bot.get_channel(802935216229449749).send(f"{member.display_name} has left {member.guild.name}.")
+		await self.bot.get_channel(748180227095789620).send(f"{member.display_name} sunucuyu terk etti.")
 
 
 def setup(bot):

@@ -141,7 +141,7 @@ class Bot(BotBase):
                         ("Bot Hakkında", "Bu botun yapılma amacı The X Files dizisi hakkındaki Türkiye discord sunucusunu geliştirmektir.", False)]
             for name, value, inline in fields:
                 embed.add_field(name=name, value=value, inline=inline)
-            embed.set_author(name="The X Files Türkiye", icon_url="https://i.imgur.com/KLjU8fb.jpg")
+            embed.set_author(name="TXF Bot", icon_url="https://i.imgur.com/KLjU8fb.jpg")
             embed.set_footer(text="Artık düzgün bir şekilde komut ve embed ekleyebiliyorum!!")
             embed.set_thumbnail(url=self.guild.icon_url)
             

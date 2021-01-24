@@ -10,12 +10,12 @@ class Misc(Cog):
     def __init__(self, bot):
         self.bot = bot
     @command(name="prefix")
-    @cooldown(1, 10, BucketType.user)
+    @cooldown(1, 25, BucketType.user)
     @has_permissions(manage_guild=True)
     async def change_prefix(self, ctx, new: str):
         if len(new) > 5:
             embed=Embed(title="Prefix kullanılamıyor!", description=f"{new} prefixi kullanılamıyor, Prefix 5 karakterden uzun olamaz. :thumbsup: ", timestamp=datetime.utcnow(), color=0x00e1ff)
-            embed.add_field(name="", value="Lütfen 10 saniye sonra tekrar deneyiniz.", inline=True)
+            embed.add_field(name="", value="Lütfen 25 saniye sonra tekrar deneyiniz.", inline=True)
             await ctx.send(embed=embed)
         else:
             db.execute("UPDATE guilds SET Prefix = ? WHERE GuildID = ?", new, ctx.guild.id)

@@ -13,14 +13,19 @@ from discord.errors import HTTPException, Forbidden
 from discord.ext.commands import Bot as BotBase
 from discord.ext.commands import Context
 from discord.ext.commands import (CommandNotFound, BadArgument, MissingRequiredArgument, CommandOnCooldown)
+from discord.ext.commands.core import has_permissions
 from discord.ext.commands.errors import BadArgument, CommandOnCooldown
+from discord.ext.commands import when_mentioned_or, command, has_permissions
 
 from ..db import db
 
-PREFIX = "T-"
 OWNER_IDS = [385800441709068288]
 COGS = [path.split("\\")[-1][:-3] for path in glob("./lib/cogs/*.py")]
 IGNORE_EXCEPTIONS = (CommandNotFound, BadArgument)
+
+def get_prefix(bot, message):
+    prefix = db.field("SELECT Prefix FROM guilds WHERE GuildID = ?", message.guild.id)
+    return when_mentioned_or(prefix)(bot, message)
 
 
 class Ready(object):
@@ -38,7 +43,6 @@ class Ready(object):
 
 class Bot(BotBase):
     def __init__(self):
-        self.PREFIX = PREFIX
         self.ready = False
         self.cogs_ready = Ready()
 
@@ -47,7 +51,7 @@ class Bot(BotBase):
 
         db.autosave(self.scheduler)
         super().__init__(
-            command_prefix=PREFIX,
+            command_prefix=get_prefix,
             owner_ids=OWNER_IDS,
             Intents=Intents.all(),
             )

@@ -25,8 +25,6 @@ class Welcome(Cog):
 		except Forbidden:
 			pass
 
-		#await member.add_roles(member.guild.get_role(748171036784197752))
-
 	@Cog.listener()
 	async def on_member_remove(self, member):
 		db.execute("DELETE FROM exp WHERE UserID = ?", member.id)

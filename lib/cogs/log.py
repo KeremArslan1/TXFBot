@@ -1,10 +1,7 @@
 from datetime import datetime
-
 from discord import Embed
 from discord.ext.commands import Cog
-from discord.ext.commands import command
-
-
+	
 class Log(Cog):
 	def __init__(self, bot):
 		self.bot = bot
@@ -117,7 +114,6 @@ class Log(Cog):
 				embed.add_field(name=name, value=value, inline=inline)
             
 			await self.log_channel.send(embed=embed)
-
 
 def setup(bot):
 	bot.add_cog(Log(bot))

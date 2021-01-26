@@ -14,12 +14,12 @@ class Misc(Cog):
     @has_permissions(manage_guild=True)
     async def change_prefix(self, ctx, new: str):
         if len(new) > 5:
-            embed=Embed(title="Prefix kullanılamıyor!", description=f"{new} prefixi kullanılamıyor, Prefix 5 karakterden uzun olamaz. :thumbsup: ", timestamp=datetime.utcnow(), color=0x00e1ff)
+            embed=Embed(title="Prefix kullanılamıyor!", description=f"{new} prefixi kullanılamıyor, Prefix 5 karakterden uzun olamaz.", timestamp=datetime.utcnow(), color=0x00e1ff)
             embed.add_field(name="", value="Lütfen 25 saniye sonra tekrar deneyiniz.", inline=True)
             await ctx.send(embed=embed)
         else:
             db.execute("UPDATE guilds SET Prefix = ? WHERE GuildID = ?", new, ctx.guild.id)
-            embed=Embed(title="Prefix değiştirildi!", description=f"Prefixiniz başarıyla {new} olarak değiştirildi", timestamp=datetime.utcnow(), color=0x00e1ff)
+            embed=Embed(title="Prefix değiştirildi!", description=f"Prefixiniz başarıyla {new} olarak değiştirildi. :thumbsup: ", timestamp=datetime.utcnow(), color=0x00e1ff)
             await ctx.send(embed=embed)
     @change_prefix.error
     async def change_prefix_error(self, ctx, exc):

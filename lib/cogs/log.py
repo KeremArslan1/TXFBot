@@ -1,7 +1,7 @@
 from datetime import datetime
 from discord import Embed
 from discord.ext.commands import Cog
-	
+
 class Log(Cog):
 	def __init__(self, bot):
 		self.bot = bot
@@ -41,7 +41,7 @@ class Log(Cog):
 				embed.add_field(name=name, value=value, inline=inline)
 
 			await self.log_channel.send(embed=embed)
-
+		
 		if before.avatar_url != after.avatar_url:
 			embed = Embed(title=":bookmark_tabs:Avatar Değiştirildi",
 						  description=f"{self.log_channel.guild.get_member(after.id)} avatarını değiştirdi.",
@@ -69,7 +69,7 @@ class Log(Cog):
 
 			await self.log_channel.send(embed=embed)
 
-		elif before.roles != after.roles:
+		if before.roles != after.roles:
 			embed = Embed(title=":crossed_swords:Roller Güncellendi",
 						  description=f"{self.log_channel.guild.get_member(after.id)} kullanıcısının rolleri güncellendi.",
 						  colour=0x87ceeb,

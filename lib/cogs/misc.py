@@ -1,5 +1,5 @@
 from datetime import datetime
-from discord import Embed
+from discord import Embed, Guild
 from discord.ext.commands import Cog
 from discord.ext.commands import CheckFailure
 from discord.ext.commands import command, has_permissions, cooldown
@@ -10,6 +10,7 @@ from attr import __description__
 class Misc(Cog):
     def __init__(self, bot):
         self.bot = bot
+
     @command(name="prefix", brief="Sunucunuza özel prefix oluşturmanızı sağlar.")
     @cooldown(1, 25, BucketType.user)
     @has_permissions(manage_guild=True)
@@ -27,6 +28,11 @@ class Misc(Cog):
         if isinstance(exc, CheckFailure):
             embed=Embed(title="Prefix kullanılamıyor!", description="Prefix değiştirebilmek için mesajları yönetme yetkisine ihtiyacınız var!", timestamp=datetime.utcnow(), color=0x00e1ff)
             await ctx.send(embed=embed)
+
+    #@Cog.listener()
+    #async def on_guild_join(self, ctx, guild):
+	#    db.execute("UPDATE guilds SET Prefix = T- WHERE GuildID = ?", self.guild.id)
+
     @Cog.listener()
     async def on_ready(self):
         if not self.bot.ready:

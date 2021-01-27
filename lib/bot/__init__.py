@@ -85,6 +85,9 @@ class Bot(BotBase):
             else:
                 await ctx.send("Şu an komut çalıştırmaya hazır değilim, birkaç saniye sonra tekrar deneyiniz.")
 
+    async def on_guild_join(self, guild):
+        db.execute("INSERT INTO guilds (GuildID, Prefix) VALUES (?, 'T-')", guild.id)
+
     async def rules_reminder(self):
         channel = self.get_channel(720319247628369950)
         await self.stdout.send("Sunucuyu aktif tutmayı unutmayın @here")

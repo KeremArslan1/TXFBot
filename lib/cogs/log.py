@@ -1,6 +1,7 @@
 from datetime import datetime
 from discord import Embed
 from discord.ext.commands import Cog
+from ..db import db
 
 class Log(Cog):
 	def __init__(self, bot):

@@ -5,11 +5,12 @@ from discord.ext.commands import CheckFailure
 from discord.ext.commands import command, has_permissions, cooldown
 from discord.ext.commands import Cog, BucketType
 from ..db import db
+from attr import __description__
 
 class Misc(Cog):
     def __init__(self, bot):
         self.bot = bot
-    @command(name="prefix")
+    @command(name="prefix", brief="Sunucunuza özel prefix oluşturmanızı sağlar.")
     @cooldown(1, 25, BucketType.user)
     @has_permissions(manage_guild=True)
     async def change_prefix(self, ctx, new: str):

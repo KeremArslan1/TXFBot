@@ -4,15 +4,16 @@ from discord import Embed, Member
 from discord.ext.commands import Cog, BucketType
 from discord.ext.commands import CheckFailure
 from discord.ext.commands import command, has_permissions, cooldown
+from attr import __description__
 
 class Info(Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @command(name="Kullanıcı_Bilgisi", aliases=["K_B",])
+    @command(name="Kullanıcı_Bilgisi", aliases=["K_B",], brief="Belirli bir kullanıcı veya kendiniz hakkında bilgi almanızı sağlar.")
     async def Kullanıcı_Bilgisi(self, ctx, target: Optional[Member]):
         target = target or ctx.author
-        embed = Embed(title="Kullanıcı bilgisi",
+        embed = Embed(title="Kullanıcı bilgisi:detective:",
                       colour=0x87ceeb,
                       timestamp=datetime.utcnow(),
                       )
@@ -30,9 +31,9 @@ class Info(Cog):
             embed.add_field(name=name, value=value, inline=inline)
         await ctx.send(embed=embed)
 
-    @command(name="Sunucu_Bilgisi", aliases=["S_B"])
+    @command(name="Sunucu_Bilgisi", aliases=["S_B"], brief="Sunucu hakkında bilgi almanızı sağlar.")
     async def Sunucu_Bilgisi(self, ctx):
-        embed = Embed(title="Sunucu Bilgisi",
+        embed = Embed(title="Sunucu Bilgisi:bookmark_tabs:",
 					  colour=ctx.guild.owner.colour,
 					  timestamp=datetime.utcnow())
 
@@ -64,7 +65,7 @@ class Info(Cog):
 
         await ctx.send(embed=embed)
 
-    @command(name="Bot_Bilgisi", aliases=["B_B"])
+    @command(name="Bot_Bilgisi", aliases=["B_B"], brief="Bot hakkında bilgi almanızı sağlar.")
     async def Bot_Bilgisi(self, ctx):
         embed = Embed(title="Bot Bilgisi:robot:",
 					  colour=0x87ceeb,
@@ -73,8 +74,9 @@ class Info(Cog):
 				  ("Sunucu sayısı:", len(self.bot.guilds), True),
 				  ("Kullanıcı sayısı:", len(self.bot.users), True),
                   ("Davet linki:", "[Link](https://discord.com/api/oauth2/authorize?client_id=790241640739897354&permissions=8&scope=bot)", True),
-                  ("Bağış linki:", "Yakında", True),
-                  ("VIP satın alma:", "Yakında", True),]
+                  #("Bağış linki:", "Yakında", True),
+                  ("VIP satın alma:", "Yakında", True),
+                  ("Kaynak kodları:", "[Link](https://github.com/KeremArslan1/TXFBot)", True),]
         for name, value, inline in fields:
             embed.add_field(name=name, value=value, inline=inline)
         await ctx.send(embed=embed)

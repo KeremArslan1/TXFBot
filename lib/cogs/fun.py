@@ -15,7 +15,6 @@ def wiki_summary(arg):
     definition = wikipedia.summary(arg, sentences=3, chars=1000, auto_suggest=True, redirect=True)
     return definition
 
-
 class Fun(Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -23,13 +22,11 @@ class Fun(Cog):
     @command(name="Selam", aliases=["selam", "Merhaba", "merhaba"], brief="Botun gününün güzel geçmesi için ona bir selam verebilirsin :).")
     @cooldown(1, 60, BucketType.user)
     async def selam(self, ctx):
-        """Botun gününün güzel geçmesi için ona bir selam verebilirsin :)."""
         await ctx.send(f"{choice(('Selam', 'Merhaba'))} {ctx.author.mention}!")
 
     @command(name="zar_at", aliases=["Zar_at", "zar_At", "Zar_At"], brief="Zar atarak arkadaşlarınla oyunlar oynayabilirsin. 'Zar atma sayısı x Zarın yüz sayısı' şeklinde kullanabilirsin. ")
     @cooldown(1, 15, BucketType.user)
     async def zar_at(self, ctx, Zar_kombinasyonu: str):
-        """Zar atarak arkadaşlarınla oyunlar oynayabilirsin. "Zar atma sayısı x Zarın yüz sayısı" şeklinde kullanabilirsin. """
         dice, value = (int(term) for term in Zar_kombinasyonu.split("x"))
 
         if dice <= 25:
@@ -43,7 +40,6 @@ class Fun(Cog):
     @command(name="tokat", aliases=["Vur", "Tokat", "vur"], brief="Arkadaşlarına tokat atabilirsin, bu sayede onları utandırabilir veya cezalandırabilirsin.")
     @cooldown(1, 60, BucketType.user)
     async def slap_member(self, ctx, kullanıcı: Member, *, sebep: Optional[str] = "sebepsizce"):
-        """Arkadaşlarına tokat atabilirsin, bu sayede onları utandırabilir veya cezalandırabilirsin."""
         await ctx.send(f"{ctx.author.mention}, {kullanıcı.mention}'a {sebep} sebebiyle vurdu!")
 
     @slap_member
@@ -54,28 +50,18 @@ class Fun(Cog):
     @command(name="echo", aliases=["eko", "Eko", "Echo", "söyle", "Söyle"], brief="Bomboş bir odadaymışsın gibi sesin yankılanır.")
     @cooldown(1, 40, BucketType.user)
     async def echo_message(self, ctx, *, mesaj):
-            """Bomboş bir odadaymışsın gibi sesin yankılanır."""
             await ctx.message.delete()
             await ctx.send(mesaj)
-
-    @command(name="Kaynak_kodları", brief="Kaynak kodlarıma buradan erişebilirsin.")
-    @cooldown(1, 30, BucketType.guild)
-    async def kaynak_kodları(self, ctx,):
-        """Kaynak kodlarıma buradan erişebilirsin."""
-        embed=Embed(title="Kaynak Kodlarım", url="https://github.com/KeremArslan1/TXFBot", description="Bu link sayesinde kaynak kodlarıma ulaşabilirsin!", color=0x0088ff)
-        await ctx.send(embed=embed)
 
     @command(name="Wikipedia", aliases=["Wiki", "wikipedia", "wiki"], brief="Wikipedia'da istediğin konu hakkında araştırma yapabilirsin.")
     @cooldown(1, 25, BucketType.user)
     async def Wikipedia(self, ctx, *,konu):
-        """Wikipedia'da istediğin konu hakkında araştırma yapabilirsin."""
         embed=Embed(title="Arama yapılıyor...", description=wiki_summary(konu), colour=0x0088ff)
         await ctx.send(embed=embed)
 
     @command(name="Gerçekler", aliases=["gerçekler", "Facts", "facts"], brief="Hayvanlar hakkında garip bilgiler edinebilirsin, maalesef şu an sadece ingilizce şekilde kullanılabilir.")
     @cooldown(1, 25, BucketType.user)
     async def animal_fact(self, ctx, animal: str):
-        """Hayvanlar hakkında garip bilgiler edinebilirsin, maalesef şu an sadece ingilizce şekilde kullanılabilir."""
         if animal.lower() in ("dog", "cat", "panda", "fox", "bird", "koala"):
             fact_url = f"https://some-random-api.ml/facts/{animal.lower()}"
             image_url = f"https://some-random-api.ml/img/{'birb' if animal.lower() == 'bird' else animal.lower()}"

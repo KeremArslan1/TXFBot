@@ -1,5 +1,5 @@
 from typing import Optional
-
+from attr import __description__
 from discord import Embed
 from discord.utils import get
 from discord.ext.menus import MenuPages, ListPageSource
@@ -62,9 +62,8 @@ class Help(Cog):
 		embed.add_field(name="Komut açıklaması", value=command.help)
 		await ctx.send(embed=embed)
 
-	@command(name="help", aliases=["Help", "Yardım", "yardım", "yardim", "Yardim"])
+	@command(name="help", aliases=["Help", "Yardım", "yardım", "yardim", "Yardim"], brief="Bu mesajı gösterir.")
 	async def show_help(self, ctx, komut: Optional[str]):
-		"""Bu mesajı gösterir."""
 		if komut is None:
 			menu = MenuPages(source=HelpMenu(ctx, list(self.bot.commands)),
 							 delete_message_after=True,

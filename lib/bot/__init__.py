@@ -166,7 +166,7 @@ class Bot(BotBase):
 
             self.ready = True
             print("Bot hazır!")
-            await Bot.change_presence(self, activity=discord.Game(name="T-help"))
+            await Bot.change_presence(self, activity=discord.Game(name="T-Help"))
             
             
             

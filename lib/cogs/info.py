@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 from discord import Embed, Member
-from discord.ext.commands import Cog
+from discord.ext.commands import Cog, BucketType
 from discord.ext.commands import CheckFailure
 from discord.ext.commands import command, has_permissions, cooldown
 
@@ -64,6 +64,20 @@ class Info(Cog):
 
         await ctx.send(embed=embed)
 
+    @command(name="Bot_Bilgisi", aliases=["B_B"])
+    async def Bot_Bilgisi(self, ctx):
+        embed = Embed(title="Bot Bilgisi:robot:",
+					  colour=0x87ceeb,
+					  timestamp=datetime.utcnow())
+        fields = [("Bot sahibi:", f"<@385800441709068288>" , True),
+				  ("Sunucu sayısı:", len(self.bot.guilds), True),
+				  ("Kullanıcı sayısı:", len(self.bot.users), True),
+                  ("Davet linki:", "[Link](https://discord.com/api/oauth2/authorize?client_id=790241640739897354&permissions=8&scope=bot)", True),
+                  ("Bağış linki:", "Yakında", True),
+                  ("VIP satın alma:", "Yakında", True),]
+        for name, value, inline in fields:
+            embed.add_field(name=name, value=value, inline=inline)
+        await ctx.send(embed=embed)
     @Cog.listener()
     async def on_ready(self):
         if not self.bot.ready:

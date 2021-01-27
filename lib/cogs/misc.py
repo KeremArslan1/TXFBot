@@ -29,6 +29,6 @@ class Misc(Cog):
     @Cog.listener()
     async def on_ready(self):
         if not self.bot.ready:
-            self.bot.cogs_ready.ready_up("misc")
+            self.bot.cogs_ready.ready_up("misc")    
 def setup(bot):
     bot.add_cog(Misc(bot))

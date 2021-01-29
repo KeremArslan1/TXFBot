@@ -29,10 +29,6 @@ class Misc(Cog):
             embed=Embed(title="Prefix kullanılamıyor!", description="Prefix değiştirebilmek için mesajları yönetme yetkisine ihtiyacınız var!", timestamp=datetime.utcnow(), color=0x00e1ff)
             await ctx.send(embed=embed)
 
-    #@Cog.listener()
-    #async def on_guild_join(self, ctx, guild):
-	#    db.execute("UPDATE guilds SET Prefix = T- WHERE GuildID = ?", self.guild.id)
-
     @Cog.listener()
     async def on_ready(self):
         if not self.bot.ready:

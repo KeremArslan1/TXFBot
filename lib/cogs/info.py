@@ -17,7 +17,7 @@ class Info(Cog):
                       colour=0x87ceeb,
                       timestamp=datetime.utcnow(),
                       )
-
+        embed.set_thumbnail(url=target.avatar_url)
         fields = [("İsim:", str(target), True),
 				  ("ID", target.id, True),
 				  ("Bot:", target.bot, True),
@@ -70,6 +70,7 @@ class Info(Cog):
         embed = Embed(title="Bot Bilgisi:robot:",
 					  colour=0x87ceeb,
 					  timestamp=datetime.utcnow())
+        embed.set_thumbnail(url="https://i.imgur.com/5rBJKiy.gif")
         fields = [("Bot sahibi:", f"<@385800441709068288>" , True),
 				  ("Sunucu sayısı:", len(self.bot.guilds), True),
 				  ("Kullanıcı sayısı:", len(self.bot.users), True),

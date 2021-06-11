@@ -14,7 +14,6 @@ import wikipedia
 def wiki_summary(arg):
     definition = wikipedia.summary(arg, sentences=3, chars=1000, auto_suggest=True, redirect=True)
     return definition
-
 class Fun(Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -47,17 +46,17 @@ class Fun(Cog):
         if isinstance(exc, BadArgument):
             await ctx.send("Bu isimde bir kullanıcı bulamadım!")
 
-    @command(name="echo", aliases=["eko", "Eko", "Echo", "söyle", "Söyle"], brief="Bomboş bir odadaymışsın gibi sesin yankılanır.")
-    @cooldown(1, 40, BucketType.user)
-    async def echo_message(self, ctx, *, mesaj):
-            await ctx.message.delete()
-            await ctx.send(mesaj)
-
     @command(name="Wikipedia", aliases=["Wiki", "wikipedia", "wiki"], brief="Wikipedia'da istediğin konu hakkında araştırma yapabilirsin.")
     @cooldown(1, 25, BucketType.user)
     async def Wikipedia(self, ctx, *,konu):
         embed=Embed(title="Arama yapılıyor...", description=wiki_summary(konu), colour=0x0088ff)
         await ctx.send(embed=embed)
+
+    @command(name="echo", aliases=["eko", "Eko", "Echo", "söyle", "Söyle"], brief="Bomboş bir odadaymışsın gibi sesin yankılanır.")
+    @cooldown(1, 40, BucketType.user)
+    async def echo_message(self, ctx, *, mesaj):
+            await ctx.message.delete()
+            await ctx.send(mesaj)
 
     @command(name="Gerçekler", aliases=["gerçekler", "Facts", "facts"], brief="Hayvanlar hakkında garip bilgiler edinebilirsin, maalesef şu an sadece ingilizce şekilde kullanılabilir.")
     @cooldown(1, 25, BucketType.user)
